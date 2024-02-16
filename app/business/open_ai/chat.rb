@@ -5,7 +5,6 @@ module OpenAi
     GPT_MODEL = 'gpt-4-1106-preview'
     TEMPERATURE = 0.7
 
-    attr_accessor :messages # apenas para teste
     def initialize
       @messages = [] << Prompts::PERSONALITY
     end
@@ -21,16 +20,10 @@ module OpenAi
       run
     end
 
-    def run(context: nil)
-      if context.present?
-        @messages << Prompts::CONTEXTS[context]
-        @messages << Prompts::GOALS[context]
-      end
-      response = chat_completion
-      message = response.dig(:choices, 0, :message)
-      content = message[:content]
-      @messages << { role: :assistant, content: }
-      @messages.last
+    def ask(query)
+      @messages << { role: :user, content: query }
+      analyze
+      puts @messages.inspect
     end
 
     def add_system_context(content)
@@ -42,12 +35,40 @@ module OpenAi
 
     private
 
+    def analyze
+      response = chat_completion
+      message = response.dig(:choices, 0, :message)
+      content = message[:content]
+      @messages << { role: :assistant, content: } if content.present?
+
+      return unless function_call?(message)
+
+      @messages << { role: :assistant, content: message[:function_call].to_json }
+      results = execute_function_call(message)
+
+      @messages << results
+
+      analyze
+    end
+
+    def execute_function_call(message)
+      function = message.dig(:function_call, :name).to_sym
+      return "#{function} is not a valid function." unless ToolCalls.respond_to?(function)
+
+      ToolCalls.method(function).call
+    end
+
+    def function_call?(message)
+      message.try(:[], :role) == 'assistant' && message.try(:[], :function_call)
+    end
+
     def chat_completion
       response = client.chat(
         parameters: {
           model: GPT_MODEL,
           messages: @messages,
-          temperature: TEMPERATURE
+          temperature: TEMPERATURE,
+          functions: ToolCalls.functions
         }
       )
 
