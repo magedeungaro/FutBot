@@ -7,7 +7,7 @@ module OpenAi
 
     attr_accessor :messages # apenas para teste
     def initialize
-      @messages = []
+      @messages = [] << Prompts::PERSONALITY
     end
 
     def client
@@ -18,6 +18,14 @@ module OpenAi
 
     def chat(query)
       @messages << { role: :user, content: query }
+      run
+    end
+
+    def run(context: nil)
+      if context.present?
+        @messages << Prompts::CONTEXTS[context]
+        @messages << Prompts::GOALS[context]
+      end
       response = chat_completion
       message = response.dig(:choices, 0, :message)
       content = message[:content]
