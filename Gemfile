@@ -63,3 +63,9 @@ group :development do
   # gem "spring"
 end
 
+
+gem "ruby-openai", "~> 6.3"
+
+gem "dotenv", "~> 3.0"
+
+gem "solargraph", "~> 0.50.0"
