@@ -38,9 +38,10 @@ module OpenAi
     end
 
     def self.get_social_media_mood_prompt
+      social_media_mood = PlaceHolderSetting.find_by(name: "social_media_mood").value
       {
         role: :system,
-        content: "Mood das redes sociais sobre o clube: #{ENV['SOCIAL_MEDIA_MOOD']}",
+        content: "Mood das redes sociais sobre o clube: #{social_media_mood}",
         name: 'social_media_mood'
       }
     end

@@ -1,0 +1,2 @@
+class PlaceHolderSetting < ApplicationRecord
+end
