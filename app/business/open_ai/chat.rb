@@ -17,20 +17,8 @@ module OpenAi
 
     def chat(query)
       @messages << { role: :user, content: query }
-      run
-    end
-
-    def ask(query)
-      @messages << { role: :user, content: query }
       analyze
-      puts @messages.inspect
-    end
-
-    def add_system_context(content)
-      @messages << {
-        role: :system,
-        content:
-      }
+      @messages.last
     end
 
     private
