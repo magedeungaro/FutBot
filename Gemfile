@@ -8,6 +8,12 @@ gem "rails", "~> 7.1.3"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 
+# Telegram integration
+gem 'telegram-bot-ruby', '~> 1.0'
+
+# Print things nicely
+gem "awesome_print"
+
 # Use sqlite3 as the database for Active Record
 gem "sqlite3", "~> 1.4"
 
