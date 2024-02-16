@@ -31,7 +31,7 @@ module OpenAi
 
     def self.handle_sign_up
       {
-        role: :system,
+        role: :function,
         content: 'Cara, entre no link https://www.botafogo.com.br/inscricoes/',
         name: 'handle_sign_up'
       }
@@ -40,7 +40,7 @@ module OpenAi
     def self.get_social_media_mood_prompt
       social_media_mood = PlaceHolderSetting.find_by(name: "social_media_mood").value
       {
-        role: :system,
+        role: :function,
         content: "Mood das redes sociais sobre o clube: #{social_media_mood}",
         name: 'social_media_mood'
       }
@@ -48,8 +48,9 @@ module OpenAi
 
     def self.handle_randomness
       {
-        role: :system,
-        content: 'Cara, desculpa tá? Mas só consigo auxiliar sobre o Fogão e o Camisa 7.'
+        role: :function,
+        content: 'Cara, desculpa tá? Mas só consigo auxiliar sobre o Fogão e o Camisa 7.',
+        name: 'handle_randomness'
       }
     end
   end
