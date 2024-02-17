@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OpenAi
   class ToolCalls
     def self.functions
@@ -8,15 +10,29 @@ module OpenAi
         },
         {
           name: :handle_sign_up,
-          description: 'Use essa função para responder torcedores que estão buscando se tornarem sócio torcedor'
+          description: 'Use essa função para responder torcedores que estão buscando se tornar sócio torcedor/assinar o camisa7.'
         },
         {
           name: :get_social_media_mood_prompt,
-          description: 'Use essa função para entender melhor como lidar com o torcedor que quer cancelar o programa sócio torcedor.'
+          description: 'Use essa função para entender melhor como lidar com o torcedor que quer cancelar o programa sócio torcedor/camisa7.'
         },
         {
           name: :handle_randomness,
           description: 'Use essa função para lidar com o torcedor que sair do contexto do clube.'
+        },
+        {
+          name: :get_club_info,
+          description: 'Use essa função para saber sobre o clube, como link oficial e telefone do clube; link, endereço físico e suporte da loja. Não inclui suporte nem link do camisa7.',
+          parameters: {
+            type: :object,
+            properties: {
+              info_kind: {
+                type: :string,
+                description: "Retorne o parâmetro que representa o tipo da busca. Os parâmetros possíveis são: club_phone, store_link, website_link, store_customer_support, e store_address"
+              }
+            },
+            required: %w[info_kind]
+          }
         }
       ]
     end
@@ -31,24 +47,34 @@ module OpenAi
 
     def self.handle_sign_up
       {
-        role: :system,
-        content: 'Cara, entre no link https://www.botafogo.com.br/inscricoes/',
+        role: :function,
+        content: 'Cara, entre no link https://camisa7.botafogo.com.br/',
         name: 'handle_sign_up'
       }
     end
 
     def self.get_social_media_mood_prompt
+      social_media_mood = PlaceHolderSetting.find_by(name: "social_media_mood").value
       {
-        role: :system,
-        content: "Mood das redes sociais sobre o clube: #{ENV['SOCIAL_MEDIA_MOOD']}",
+        role: :function,
+        content: "Mood das redes sociais sobre o clube: #{social_media_mood}",
         name: 'social_media_mood'
       }
     end
 
     def self.handle_randomness
       {
-        role: :system,
-        content: 'Cara, desculpa tá? Mas só consigo auxiliar sobre o Fogão e o Camisa 7.'
+        role: :function,
+        content: 'Cara, desculpa tá? Mas só consigo auxiliar sobre o Fogão e o Camisa 7.',
+        name: 'handle_randomness'
+      }
+    end
+
+    def self.get_club_info(info_kind:)
+      {
+        role: :function,
+        content: Setup.club_info[info_kind.to_sym],
+        name: 'get_club_info'
       }
     end
   end
