@@ -1,5 +1,8 @@
-<h1>Set Mood</h1>
-
-<%= link_to "Positive", root_path(social_media_mood: "positivo")%>
-<%= link_to "Neutral", root_path(social_media_mood: "neutral")%>
-<%= link_to "Negative", root_path(social_media_mood: "negative")%>
+<div class="container">
+  <h1>Set Mood</h1>
+</div>
+<div class="container">
+  <%= link_to "Positive", root_path(social_media_mood: "positivo"), class: "text-decoration-none btn btn-info"%>
+  <%= link_to "Neutral", root_path(social_media_mood: "neutral"), class: "text-decoration-none btn btn-info"%>
+  <%= link_to "Negative", root_path(social_media_mood: "negative"), class: "text-decoration-none btn btn-info"%>
+</div>
