@@ -2,8 +2,6 @@
 
 module Integration
   class Bot
-    include Singleton
-
     def initialize;end
 
     def run
