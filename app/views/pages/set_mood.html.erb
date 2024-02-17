@@ -1,8 +1,8 @@
-<div class="container">
+<div class="container d-flex justify-content-center my-4">
   <h1>Set Mood</h1>
 </div>
-<div class="container">
-  <%= link_to "Positive", root_path(social_media_mood: "positivo"), class: "text-decoration-none btn btn-info"%>
+<div class="container d-flex justify-content-evenly">
+  <%= link_to "Positive", root_path(social_media_mood: "positivo"), class: "text-decoration-none btn btn-info "%>
   <%= link_to "Neutral", root_path(social_media_mood: "neutral"), class: "text-decoration-none btn btn-info"%>
   <%= link_to "Negative", root_path(social_media_mood: "negative"), class: "text-decoration-none btn btn-info"%>
 </div>
