@@ -11,7 +11,7 @@ module Integration
           response = service.create_reponse(message)
           bot.api.send_message(chat_id: message.chat.id, text: response)
         rescue
-          bot.api.send_message(chat_id: message.chat.id, text: 'Something went wrong. Please try again later.')
+          bot.api.send_message(chat_id: message.chat.id, text: 'Opa, deu ruim aqui, brother. Tenta de novo aí.')
         end
       end
     end
