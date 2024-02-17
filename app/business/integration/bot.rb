@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'telegram/bot'
-
 module Integration
   class Bot
+    include Singleton
+
     def initialize
       @gpt_service = ::Telegram::ResponseService.new
     end

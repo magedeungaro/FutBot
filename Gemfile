@@ -76,3 +76,7 @@ gem "ruby-openai", "~> 6.3"
 gem "dotenv", "~> 3.0"
 
 gem "solargraph", "~> 0.50.0"
+
+gem "sidekiq", "~> 7.2"
+
+gem "annotate", "~> 3.2"
