@@ -20,6 +20,6 @@ class Chat::History < ApplicationRecord
   belongs_to :chat
 
   def expired?
-    updated_at < 2.min.ago
+    updated_at < 10.min.ago
   end
 end

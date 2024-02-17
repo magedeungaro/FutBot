@@ -13,6 +13,7 @@ module OpenAi
     end
     
     def chat(message)
+      binding.pry
       query = message.text
       set_previous_context(message.chat.id)
       @messages << { role: :user, content: query }
@@ -64,7 +65,7 @@ module OpenAi
       response = client.chat(
         parameters: {
           model: Setup::GPT_MODEL,
-          messages: @messages,
+          messages: @messages.compact!,
           temperature: Setup::TEMPERATURE,
           functions: ToolCalls.functions
         }
