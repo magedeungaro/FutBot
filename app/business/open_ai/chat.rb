@@ -1,12 +1,9 @@
 # frozen_string_literal: true
 
 module OpenAi
-  class Chat
-    GPT_MODEL = 'gpt-4-1106-preview'
-    TEMPERATURE = 0.7
-    
+  class Chat    
     def initialize
-      @messages = [] << Prompts::PERSONALITY
+      @messages = [] << Setup::PERSONALITY
     end
 
     def client
@@ -60,9 +57,9 @@ module OpenAi
     def chat_completion
       response = client.chat(
         parameters: {
-          model: GPT_MODEL,
+          model: Setup::GPT_MODEL,
           messages: @messages,
-          temperature: TEMPERATURE,
+          temperature: Setup::TEMPERATURE,
           functions: ToolCalls.functions
         }
       )

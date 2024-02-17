@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OpenAi
   class ToolCalls
     def self.functions
@@ -71,7 +73,7 @@ module OpenAi
     def self.get_club_info(info_kind:)
       {
         role: :function,
-        content: Prompts.club_info[info_kind.to_sym],
+        content: Setup.club_info[info_kind.to_sym],
         name: 'get_club_info'
       }
     end
