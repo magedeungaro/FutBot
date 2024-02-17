@@ -1,18 +1,17 @@
 # frozen_string_literal: true
 
-require 'telegram/bot'
-
 module Integration
   class Bot
-    def initialize
-      @gpt_service = ::Telegram::ResponseService.new
-    end
+    def initialize;end
 
     def run
       ::Telegram::Bot::Client.run(ENV['TELEGRAM_API_TOKEN']) do |bot|
         bot.listen do |message|
-          response = @gpt_service.create_reponse(message)
+          service = Telegram::ResponseService.new
+          response = service.create_reponse(message)
           bot.api.send_message(chat_id: message.chat.id, text: response)
+        rescue
+          bot.api.send_message(chat_id: message.chat.id, text: 'Opa, deu ruim aqui, brother. Tenta de novo aí.')
         end
       end
     end

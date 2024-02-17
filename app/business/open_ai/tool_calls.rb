@@ -6,19 +6,19 @@ module OpenAi
       [
         {
           name: :handle_swearing,
-          description: 'Use essa função para responder torcedores muito bravos e que estão xingando o time e mostrando insatisfação'
+          description: 'Use essa função para responder torcedores muito bravos e que estão xingando o time e mostrando insatisfação de forma agressiva.'
         },
         {
           name: :handle_sign_up,
-          description: 'Use essa função para responder torcedores que estão buscando se tornar sócio torcedor/assinar o camisa7.'
+          description: 'Use essa função para responder torcedores que estão buscando se tornar sócio torcedor e assinar o camisa7.'
         },
         {
           name: :get_social_media_mood_prompt,
-          description: 'Use essa função para entender melhor como lidar com o torcedor que quer cancelar o programa sócio torcedor/camisa7.'
+          description: 'Use essa função para entender melhor como lidar com o torcedor que quer cancelar o programa sócio torcedor.'
         },
         {
           name: :handle_randomness,
-          description: 'Use essa função para lidar com o torcedor que sair do contexto do clube.'
+          description: 'Use essa função para lidar com o torcedor que sair do contexto do clube e citar sobre outros times.'
         },
         {
           name: :get_club_info,

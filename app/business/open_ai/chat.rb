@@ -3,7 +3,8 @@
 module OpenAi
   class Chat    
     def initialize
-      @messages = [] << Setup::PERSONALITY
+      @messages = []
+      @retries = 0
     end
 
     def client
@@ -12,14 +13,40 @@ module OpenAi
       end
     end
     
-    def chat(query)
+    def chat(message)
+      query = message.text
+      set_previous_context(message.chat.id)
       @messages << { role: :user, content: query }
       analyze
       retry_analyze unless valid?
+      persist_context(message.chat.id)
       @messages.last
     end
 
     private
+
+    def retry_analyze
+      @retries += 1
+      analyze
+    end
+
+    def context_handler(chat_partner_id: nil)
+      @context_handler ||= ContextHandler.new(chat_partner_id)
+    end
+
+    def set_previous_context(chat_partner_id)
+      previous_context = context_handler(chat_partner_id:).previous_context
+      if previous_context.present?
+        @messages = @messages + previous_context 
+      else
+        @messages << Setup::PERSONALITY
+      end
+    end
+
+    def persist_context(chat_partner_id)
+      filtered_messages = @messages.reject { |message| [:function].include? message[:role] }
+      context_handler(chat_partner_id:).update(@messages)
+    end
     
     def analyze
       response = chat_completion
@@ -35,10 +62,9 @@ module OpenAi
       
       analyze
     end
-    alias_method :retry_analyze, :analyze
     
     def valid?
-      !@messages.last[:content].match?('arguments')
+      !@messages.last[:content].match?('arguments') &&  @retries < 3
     end
 
     def execute_function_call(message)

@@ -8,7 +8,7 @@ module Telegram
     end
 
     def create_reponse(message)
-      @gpt_instance.chat(message.text)[:content]
+      @gpt_instance.chat(message)[:content]
     end
   end
 end
