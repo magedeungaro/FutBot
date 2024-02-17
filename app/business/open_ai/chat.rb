@@ -12,7 +12,9 @@ module OpenAi
       end
     end
     
-    def chat(query)
+    def chat(message)
+      query = message.text
+      set_previous_context(message.chat.id)
       @messages << { role: :user, content: query }
       analyze
       retry_analyze unless valid?
@@ -20,6 +22,10 @@ module OpenAi
     end
 
     private
+
+    def set_previous_context(chat_partner_id)
+      @messages << ContextHandler.new(chat_partner_id).previous_context
+    end
     
     def analyze
       response = chat_completion
