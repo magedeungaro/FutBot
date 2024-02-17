@@ -13,7 +13,7 @@ module OpenAi
           description: 'Use essa função para responder torcedores que estão buscando se tornar sócio torcedor e assinar o camisa7.'
         },
         {
-          name: :get_social_media_mood_prompt,
+          name: :handle_cancelling,
           description: 'Use essa função para entender melhor como lidar com o torcedor que quer cancelar o programa sócio torcedor.'
         },
         {
@@ -53,15 +53,6 @@ module OpenAi
       }
     end
 
-    def self.get_social_media_mood_prompt
-      social_media_mood = PlaceHolderSetting.find_by(name: "social_media_mood").value
-      {
-        role: :function,
-        content: "Mood das redes sociais sobre o clube: #{social_media_mood}",
-        name: 'social_media_mood'
-      }
-    end
-
     def self.handle_randomness
       {
         role: :function,
@@ -75,6 +66,15 @@ module OpenAi
         role: :function,
         content: Setup.club_info[info_kind.to_sym],
         name: 'get_club_info'
+      }
+    end
+
+    def self.handle_cancelling
+      mood = PlaceHolderSetting.find_by(name: "social_media_mood").value
+      {
+        role: :function,
+        content: "(Site,https://camisa7.botafogo.com.br/),(Mood redes sociais, #{mood})",
+        name: 'handle_cancelling'
       }
     end
   end
