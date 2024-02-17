@@ -7,7 +7,15 @@ module OpenAi
     def previous_context
       return unless chat_context
 
-      @previous_context ||= JSON.parse(chat_context).deep_symbolize_keys
+      @previous_context ||= JSON.parse(chat_context)
+    end
+
+    def update(context)
+      if @chat.ignore_context?
+        ::Chat::History.create!(content: JSON.generate(context), chat: @chat)
+      else
+        @chat.histories.last.update(content: JSON.generate(context))
+      end
     end
 
     private

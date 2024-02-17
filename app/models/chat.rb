@@ -17,6 +17,6 @@ class Chat < ApplicationRecord
   end
 
   def last_context
-    histories.last.content
+    histories.last&.content
   end
 end
